@@ -1,0 +1,8 @@
+{
+    "objectscript.conn": {
+        "ns": "DEMO",
+        "active": true,
+        "server": "irishealth"
+    },
+    "git.ignoreLimitWarning": true
+}
