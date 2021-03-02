@@ -1,0 +1,929 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="IRIS" version="26" zv="IRIS for UNIX (Apple Mac OS X for x86-64) 2020.1 (Build 217_1U)" ts="2021-03-02 16:22:50">
+<Class name="Demo.RecordMapBatch.Map.TrainDataIn.BatchIn">
+<Description>
+RECORDMAP: Modified during compilation of RecordMap 'Demo.RecordMapBatch.Map.TrainDataIn'
+on 2021-02-01 at 19:12:04,436 [2021-02-01 18:12:04.436 UTC]
+by user _SYSTEM</Description>
+<Super>%Library.Persistent,EnsLib.RecordMap.SimpleBatch</Super>
+<TimeChanged>65776,69124.436655</TimeChanged>
+<TimeCreated>63904,49873.011091</TimeCreated>
+
+<Parameter name="XMLNAME">
+<Default>BatchIn</Default>
+</Parameter>
+
+<Parameter name="RECORDMAPGENERATED">
+<Default>1</Default>
+</Parameter>
+
+<Parameter name="BatchHeader">
+<Default>Line, Trip, PlatformKey, InformationType, Time, TimeRemaining, Revenue, Route</Default>
+</Parameter>
+
+<Parameter name="HeaderTerm">
+<Default>\x0d\x0a</Default>
+</Parameter>
+
+<Parameter name="BatchTrailer">
+</Parameter>
+
+<Parameter name="TrailerTerm">
+</Parameter>
+
+<Parameter name="IgnoreLeadingData">
+<Default>0</Default>
+</Parameter>
+
+<Property name="Records">
+<Type>Demo.RecordMapBatch.Map.TrainDataIn.Record</Type>
+<Cardinality>many</Cardinality>
+<Inverse>%ParentBatch</Inverse>
+<Relationship>1</Relationship>
+</Property>
+
+<Trigger name="OnDelete">
+<Code>	Set %ok = ..deleteRecords({ID})
+</Code>
+<Event>DELETE</Event>
+</Trigger>
+
+<Parameter name="XMLTYPE">
+<Default>Demo_RecordMapBatch_Map_TrainDataIn_BatchIn</Default>
+</Parameter>
+
+<Storage name="Default">
+<Type>%Storage.Persistent</Type>
+<DataLocation>^Demo.RecordMapBatc3B98.BatchInD</DataLocation>
+<DefaultData>BatchInDefaultData</DefaultData>
+<IdLocation>^Demo.RecordMapBatc3B98.BatchInD</IdLocation>
+<IndexLocation>^Demo.RecordMapBatc3B98.BatchInI</IndexLocation>
+<StreamLocation>^Demo.RecordMapBatc3B98.BatchInS</StreamLocation>
+<Data name="BatchInDefaultData">
+<Structure>listnode</Structure>
+<Subscript/>
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>%Source</Value>
+</Value>
+<Value name="3">
+<Value>BatchHeader</Value>
+</Value>
+<Value name="4">
+<Value>BatchTrailer</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+
+
+<Class name="Demo.RecordMapBatch.Map.TrainDataIn.Record">
+<Description>
+RECORDMAP: Generated from RecordMap 'Demo.RecordMapBatch.Map.TrainDataIn'
+on 2021-02-01 at 19:12:04,432 [2021-02-01 18:12:04.432 UTC]
+by user _SYSTEM</Description>
+<ProcedureBlock>1</ProcedureBlock>
+<Super>%Persistent,%XML.Adaptor,Ens.Request,EnsLib.RecordMap.Base</Super>
+<TimeChanged>65776,69124.435914</TimeChanged>
+<TimeCreated>65776,69124.432203</TimeCreated>
+<Inheritance>right</Inheritance>
+
+<Parameter name="INCLUDETOPFIELDS">
+<Default>1</Default>
+</Parameter>
+
+<Property name="Line">
+<Type>%String</Type>
+</Property>
+
+<Property name="Trip">
+<Type>%Integer</Type>
+</Property>
+
+<Property name="PlatformKey">
+<Type>%String</Type>
+</Property>
+
+<Property name="InformationType">
+<Type>%String</Type>
+</Property>
+
+<Property name="Time">
+<Type>%String</Type>
+</Property>
+
+<Storage name="Default">
+<Type>%Storage.Persistent</Type>
+<DataLocation>^Demo.RecordMapBatch3B98.RecordD</DataLocation>
+<DefaultData>RecordDefaultData</DefaultData>
+<IdLocation>^Demo.RecordMapBatch3B98.RecordD</IdLocation>
+<IndexLocation>^Demo.RecordMapBatch3B98.RecordI</IndexLocation>
+<StreamLocation>^Demo.RecordMapBatch3B98.RecordS</StreamLocation>
+<ExtentSize>2000000</ExtentSize>
+<Data name="RecordDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>Line</Value>
+</Value>
+<Value name="3">
+<Value>%Source</Value>
+</Value>
+<Value name="4">
+<Value>PlatformKey</Value>
+</Value>
+<Value name="5">
+<Value>InformationType</Value>
+</Value>
+<Value name="6">
+<Value>Time</Value>
+</Value>
+<Value name="7">
+<Value>%ParentBatch</Value>
+</Value>
+<Value name="8">
+<Value>Trip</Value>
+</Value>
+</Data>
+</Storage>
+
+<Property name="%ParentBatch">
+<Type>Demo.RecordMapBatch.Map.TrainDataIn.BatchIn</Type>
+<Cardinality>one</Cardinality>
+<Inverse>Records</Inverse>
+<Relationship>1</Relationship>
+</Property>
+
+<Index name="%ParentBatchIdx">
+<Properties>%ParentBatch</Properties>
+</Index>
+
+<Parameter name="RECORDMAPGENERATED">
+<Default>1</Default>
+</Parameter>
+</Class>
+
+
+<Class name="Demo.RecordMapBatch.Map.TrainDataIn">
+<Description>
+ANNOTATION: Record Map describing the format of the data provided by MassDOT at http://developer.mbta.com/Data/Red.txt
+RECORDMAP: Modified during compilation of RecordMap 'Demo.RecordMapBatch.Map.TrainDataIn'
+on 2021-02-01 at 19:12:04,443 [2021-02-01 18:12:04.443 UTC]
+by user _SYSTEM</Description>
+<Super>EnsLib.RecordMap.RecordMap</Super>
+<TimeChanged>65776,69124.44401</TimeChanged>
+<TimeCreated>63904,49876.23878</TimeCreated>
+
+<Method name="GetObject">
+<Description>
+Method to retrieve a record from a stream or device. This method will be generated based on the
+structure of the RecordMap. For testing purposes, a file name may be passed in the pStream argument.</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec><![CDATA[pStream:%IO.DeviceStream,*pObject:%RegisteredObject,pTimeout:%Numeric=-1,&pLookAhead:%String="",pLabelFound:%Boolean=0]]></FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	Try {
+		Set tStatus = $$$OK
+		Set pObject = $$$NULLOREF
+		If '$IsObject(pStream) {
+			Set tFilename = pStream
+			Set pStream = ##class(%IO.FileStream).%New()
+			Do pStream.Open(tFilename,,pTimeout,"UTF-8", .tStatus)
+			If $$$ISERR(tStatus) Quit
+		}
+		Set tObjectName = $parameter($this,"OBJECTNAME")
+		Set tObject = $classmethod(tObjectName,"%New")
+		If '$IsObject(tObject) {
+			Set tStatus = $$$ERROR($$$CannotCreateObject,tObjectName)
+			Quit
+		}
+		Set tObject.%Source = pStream.Name
+		Set tGetTopFields = $parameter(tObject,"INCLUDETOPFIELDS")
+		If pStream.AtEnd && (""=pLookAhead) {
+			Set tStatus = $$$ERROR($$$EnsRecordMapErrStreamAtEnd, pStream.Name)
+			Quit
+		}
+		Set pStream.CharEncoding = "UTF-8"
+
+		#; Parse incoming stream
+		Set tStatus = ..GetRecord(pStream, tObject, tGetTopFields, pTimeout, .pLookAhead, pLabelFound)
+		If $$$ISERR(tStatus) Quit
+	}
+	Catch ex {
+		Set tStatus = ex.AsStatus()
+	}
+	If $$$ISERR(tStatus) { Set pObject = $$$NULLOREF }
+	Else { Set pObject = tObject }
+	Quit tStatus
+]]></Implementation>
+</Method>
+
+<Method name="PutObject">
+<Description>
+Method to write a record to a stream or device. This method will be generated based on the
+structure of the RecordMap. For testing purposes, a file name may be passed in the pStream argument.</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec><![CDATA[pStream:%IO.DeviceStream,pObject:%RegisteredObject,pFlush:%Boolean=1,&pPadArray:%String]]></FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	Try {
+		Set tStatus = $$$OK
+		If '$IsObject(pStream) {
+			Set tFilename = pStream
+			Set pStream = ##class(%IO.FileStream).%New()
+			Do pStream.Open(tFilename,"WAE",,"UTF-8", .tStatus)
+			If $$$ISERR(tStatus) Quit
+		}
+		Set tHasTopFields = $parameter(pObject,"INCLUDETOPFIELDS")
+		Set pStream.CharEncoding = "UTF-8"
+
+		Set tStatus = ..PutRecord(pStream, pObject, tHasTopFields, .pPadArray)
+		If $$$ISERR(tStatus) Quit
+		If pFlush Do pStream.Flush(.tStatus)
+		If $$$ISERR(tStatus) Quit
+	}
+	Catch ex {
+		Set tStatus = ex.AsStatus()
+	}
+	Quit tStatus
+]]></Implementation>
+</Method>
+
+<Parameter name="OBJECTNAME">
+<Default>Demo.RecordMapBatch.Map.TrainDataIn.Record</Default>
+</Parameter>
+
+<Method name="GetRecord">
+<Description>
+Internal helper method to perform parse of incoming data</Description>
+<Internal>1</Internal>
+<ClassMethod>1</ClassMethod>
+<FormalSpec><![CDATA[pStream:%IO.DeviceStream,pObject:%RegisteredObject,pGetTopFields:%Boolean,pTimeout:%Numeric,&pLookAhead:%String="",pLabelFound:%Boolean=0]]></FormalSpec>
+<Private>1</Private>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	Set tStatus = $$$OK
+	If pLabelFound { Set tRecLabel = "" } 
+	Else { Set tRecLabel = "" } 
+	Set tStatus = ..chunkRecord(pStream, .tRecordData, .tCharCount, "", pTimeout, $char(13,10), tRecLabel, .pLookAhead, "")
+	If $$$ISERR(tStatus) Quit tStatus
+	Set tMaxLocal = $$$MaxLocalLength
+	Set tRecordData("charcount") = +$get(tCharCount)
+	Set tCurrChunk = 1
+	Set tTopPiece = 1
+	Set tCurrSep = 1
+	Set tStrings = 1
+	Set tCurrString = ""
+	Set tSeps = $listbuild($char(44,32))
+	If '$data(tRecordData(tCurrChunk, "block")) {
+		Set tCurrString = $piece(tRecordData(tCurrChunk), $char(44,32), tTopPiece)
+	}
+	Else {
+		Set tCurrString = tRecordData(tCurrChunk)
+		Set tCurrPiece = 1
+	}
+	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(44,32), .tTopPiece)
+	If pGetTopFields {
+		Set pObject.Line = tCurrString
+	}
+	If '$data(tRecordData(tCurrChunk, "block")) {
+		Set tCurrString = $piece(tRecordData(tCurrChunk), $char(44,32), tTopPiece)
+	}
+	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(44,32), .tTopPiece)
+	If pGetTopFields {
+		Set pObject.Trip =  pObject.TripDisplayToLogical(tCurrString)
+	}
+	If '$data(tRecordData(tCurrChunk, "block")) {
+		Set tCurrString = $piece(tRecordData(tCurrChunk), $char(44,32), tTopPiece)
+	}
+	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(44,32), .tTopPiece)
+	If pGetTopFields {
+		Set pObject.PlatformKey = tCurrString
+	}
+	If '$data(tRecordData(tCurrChunk, "block")) {
+		Set tCurrString = $piece(tRecordData(tCurrChunk), $char(44,32), tTopPiece)
+	}
+	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(44,32), .tTopPiece)
+	If pGetTopFields {
+		Set pObject.InformationType = tCurrString
+	}
+	If '$data(tRecordData(tCurrChunk, "block")) {
+		Set tCurrString = $piece(tRecordData(tCurrChunk), $char(44,32), tTopPiece)
+	}
+	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(44,32), .tTopPiece)
+	If pGetTopFields {
+		Set pObject.Time = tCurrString
+	}
+	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(44,32), .tTopPiece)
+	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(44,32), .tTopPiece)
+	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(44,32), .tTopPiece)
+	Quit tStatus
+]]></Implementation>
+</Method>
+
+<Method name="PutRecord">
+<Description>
+Internal helper method to output object to a stream</Description>
+<Internal>1</Internal>
+<ClassMethod>1</ClassMethod>
+<FormalSpec><![CDATA[pStream:%IO.DeviceStream,pObject:%RegisteredObject,pHasTopFields:%Boolean,&pPadArray:%String]]></FormalSpec>
+<Private>1</Private>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	Set tStatus = $$$OK
+	Do pStream.Write($select(pHasTopFields: pObject.Line,1: ""),0)
+	Do pStream.Write($char(44,32) _ $select(pHasTopFields: pObject.TripLogicalToDisplay(pObject.Trip),1: ""),0)
+	Do pStream.Write($char(44,32) _ $select(pHasTopFields: pObject.PlatformKey,1: ""),0)
+	Do pStream.Write($char(44,32) _ $select(pHasTopFields: pObject.InformationType,1: ""),0)
+	Do pStream.Write($char(44,32) _ $select(pHasTopFields: pObject.Time,1: ""),0)
+	Do pStream.Write($char(44,32),0)
+	Do pStream.Write($char(44,32),0)
+	Do pStream.Write($char(44,32),0)
+	Do pStream.Write($char(13,10), 0, .tStatus)
+	If $$$ISERR(tStatus) Quit tStatus
+	Quit tStatus
+]]></Implementation>
+</Method>
+
+<Method name="GetGeneratedClasses">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>*pClasses:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	Kill pClasses
+	Set pClasses("Demo.RecordMapBatch.Map.TrainDataIn.BatchIn")=""
+	Set pClasses("Demo.RecordMapBatch.Map.TrainDataIn.Record")=""
+	Set pClasses($classname())=""
+	Quit $$$OK
+]]></Implementation>
+</Method>
+
+<Method name="getIdentifier">
+<ClassMethod>1</ClassMethod>
+<CodeMode>expression</CodeMode>
+<FormalSpec/>
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[""
+]]></Implementation>
+</Method>
+
+<Method name="getType">
+<ClassMethod>1</ClassMethod>
+<CodeMode>expression</CodeMode>
+<FormalSpec/>
+<ReturnType>EnsLib.RecordMap.Model.DataType.RecordType</ReturnType>
+<Implementation><![CDATA["delimited"
+]]></Implementation>
+</Method>
+
+<XData name="RecordMap">
+<XMLNamespace>http://www.intersystems.com/Ensemble/RecordMap</XMLNamespace>
+<Data><![CDATA[
+<Record xmlns="http://www.intersystems.com/Ensemble/RecordMap" name="Demo.RecordMapBatch.Map.TrainDataIn" type="delimited" char_encoding="UTF-8" targetClassname="Demo.RecordMapBatch.Map.TrainDataIn.Record" batchClass="Demo.RecordMapBatch.Map.TrainDataIn.BatchIn" complexBatchManaged="0" padFromLeft="0" recordTerminator="\x0d\x0a" allowEarlyTerminator="0">
+  <Separators>
+    <Separator>, </Separator>
+  </Separators>
+  <annotation>Record Map describing the format of the data provided by MassDOT at http://developer.mbta.com/Data/Red.txt</annotation>
+  <Field name="Line" required="0" datatype="%String" repeating="0">
+  </Field>
+  <Field name="Trip" required="0" datatype="%Integer" repeating="0">
+  </Field>
+  <Field name="PlatformKey" required="0" datatype="%String" repeating="0">
+  </Field>
+  <Field name="InformationType" required="0" datatype="%String" repeating="0">
+  </Field>
+  <Field name="Time" required="0" datatype="%String" repeating="0">
+  </Field>
+  <Field name="TimeRemaining" required="0" ignored="1" datatype="%String" repeating="0">
+    <annotation>This field appears in the incoming data, but is not mapped to a property in the record object.</annotation>
+  </Field>
+  <Field name="Revenue" required="0" ignored="1" datatype="%String" repeating="0">
+    <annotation>This field appears in the incoming data, but is not mapped to a property in the record object.</annotation>
+  </Field>
+  <Field name="Route" required="0" ignored="1" datatype="%Boolean" repeating="0">
+    <annotation>This field appears in the incoming data, but is not mapped to a property in the record object.</annotation>
+  </Field>
+</Record>
+]]></Data>
+</XData>
+</Class>
+
+
+<Class name="Demo.RecordMapBatch.Map.TrainDataOut.BatchOut">
+<Description>
+RECORDMAP: Modified during compilation of RecordMap 'Demo.RecordMapBatch.Map.TrainDataOut'
+on 2015-12-18 at 17:32:14.992 [2015-12-18 22:32:14.992 UTC]
+by user UnknownUser</Description>
+<Super>%Library.Persistent,EnsLib.RecordMap.SimpleBatch</Super>
+<TimeChanged>64910,32412</TimeChanged>
+<TimeCreated>63904,49945.513392</TimeCreated>
+
+<Parameter name="XMLNAME">
+<Default>BatchOut</Default>
+</Parameter>
+
+<Parameter name="RECORDMAPGENERATED">
+<Default>1</Default>
+</Parameter>
+
+<Parameter name="BatchHeader">
+<Default>Date,TrainID,Direction,Station,Time</Default>
+</Parameter>
+
+<Parameter name="HeaderTerm">
+<Default>\x0d\x0a</Default>
+</Parameter>
+
+<Parameter name="BatchTrailer">
+</Parameter>
+
+<Parameter name="TrailerTerm">
+</Parameter>
+
+<Parameter name="IgnoreLeadingData">
+<Default>0</Default>
+</Parameter>
+
+<Property name="Records">
+<Type>Demo.RecordMapBatch.Map.TrainDataOut.Record</Type>
+<Cardinality>many</Cardinality>
+<Inverse>%ParentBatch</Inverse>
+<Relationship>1</Relationship>
+</Property>
+
+<Trigger name="OnDelete">
+<Code>	Set %ok = ..deleteRecords({ID})
+</Code>
+<Event>DELETE</Event>
+</Trigger>
+
+<Parameter name="XMLTYPE">
+<Default>Demo_RecordMapBatch_Map_TrainDataOut_BatchOut</Default>
+</Parameter>
+
+<Storage name="Default">
+<Type>%Storage.Persistent</Type>
+<DataLocation>^Demo.RecordMapBat7CD0.BatchOutD</DataLocation>
+<DefaultData>BatchOutDefaultData</DefaultData>
+<IdLocation>^Demo.RecordMapBat7CD0.BatchOutD</IdLocation>
+<IndexLocation>^Demo.RecordMapBat7CD0.BatchOutI</IndexLocation>
+<StreamLocation>^Demo.RecordMapBat7CD0.BatchOutS</StreamLocation>
+<Data name="BatchOutDefaultData">
+<Structure>listnode</Structure>
+<Subscript/>
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>%Source</Value>
+</Value>
+<Value name="3">
+<Value>BatchHeader</Value>
+</Value>
+<Value name="4">
+<Value>BatchTrailer</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+
+
+<Class name="Demo.RecordMapBatch.Map.TrainDataOut.Record">
+<Description>
+RECORDMAP: Generated from RecordMap 'Demo.RecordMapBatch.Map.TrainDataOut'
+on 2015-12-18 at 17:32:14.985 [2015-12-18 22:32:14.985 UTC]
+by user UnknownUser</Description>
+<ProcedureBlock>1</ProcedureBlock>
+<Super>%Persistent,%XML.Adaptor,Ens.Request,EnsLib.RecordMap.Base</Super>
+<TimeChanged>64910,32412</TimeChanged>
+<TimeCreated>63904,63134.985523</TimeCreated>
+<Inheritance>right</Inheritance>
+
+<Parameter name="INCLUDETOPFIELDS">
+<Default>1</Default>
+</Parameter>
+
+<Property name="Date">
+<Type>%Date</Type>
+</Property>
+
+<Property name="TrainID">
+<Type>%Integer</Type>
+</Property>
+
+<Property name="Direction">
+<Type>%String</Type>
+</Property>
+
+<Property name="Station">
+<Type>%String</Type>
+</Property>
+
+<Property name="Time">
+<Type>%Time</Type>
+<Parameter name="XMLTIMEZONE" value="IGNORE"/>
+</Property>
+
+<Property name="%ParentBatch">
+<Type>Demo.RecordMapBatch.Map.TrainDataOut.BatchOut</Type>
+<Cardinality>one</Cardinality>
+<Inverse>Records</Inverse>
+<Relationship>1</Relationship>
+</Property>
+
+<Index name="%ParentBatchIdx">
+<Properties>%ParentBatch</Properties>
+</Index>
+
+<Parameter name="RECORDMAPGENERATED">
+<Default>1</Default>
+</Parameter>
+
+<Storage name="Default">
+<Type>%Storage.Persistent</Type>
+<DataLocation>^Demo.RecordMapBatch7CD0.RecordD</DataLocation>
+<DefaultData>RecordDefaultData</DefaultData>
+<IdLocation>^Demo.RecordMapBatch7CD0.RecordD</IdLocation>
+<IndexLocation>^Demo.RecordMapBatch7CD0.RecordI</IndexLocation>
+<StreamLocation>^Demo.RecordMapBatch7CD0.RecordS</StreamLocation>
+<ExtentSize>2000000</ExtentSize>
+<Data name="RecordDefaultData">
+<Structure>listnode</Structure>
+<Subscript/>
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>Date</Value>
+</Value>
+<Value name="3">
+<Value>%Source</Value>
+</Value>
+<Value name="4">
+<Value>Direction</Value>
+</Value>
+<Value name="5">
+<Value>Station</Value>
+</Value>
+<Value name="6">
+<Value>Time</Value>
+</Value>
+<Value name="7">
+<Value>%ParentBatch</Value>
+</Value>
+<Value name="8">
+<Value>TrainID</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+
+
+<Class name="Demo.RecordMapBatch.Map.TrainDataOut">
+<Description>
+ANNOTATION: Record Map describing the data which will be output by Demo.RecordMapBatch.Production.
+RECORDMAP: Modified during compilation of RecordMap 'Demo.RecordMapBatch.Map.TrainDataOut'
+on 2015-12-18 at 17:32:15.000 [2015-12-18 22:32:15.000 UTC]
+by user UnknownUser</Description>
+<Super>EnsLib.RecordMap.RecordMap</Super>
+<TimeChanged>64910,32412</TimeChanged>
+<TimeCreated>63904,49955.47353</TimeCreated>
+
+<Method name="GetObject">
+<Description>
+Method to retrieve a record from a stream or device. This method will be generated based on the
+structure of the RecordMap. For testing purposes, a file name may be passed in the pStream argument.</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec><![CDATA[pStream:%IO.DeviceStream,*pObject:%RegisteredObject,pTimeout:%Numeric=-1,&pLookAhead:%String="",pLabelFound:%Boolean=0]]></FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	Try {
+		Set tStatus = $$$OK
+		Set pObject = $$$NULLOREF
+		If '$IsObject(pStream) {
+			Set tFilename = pStream
+			Set pStream = ##class(%IO.FileStream).%New()
+			Do pStream.Open(tFilename,,pTimeout,"UTF-8", .tStatus)
+			If $$$ISERR(tStatus) Quit
+		}
+		Set tObjectName = $parameter($this,"OBJECTNAME")
+		Set tObject = $classmethod(tObjectName,"%New")
+		If '$IsObject(tObject) {
+			Set tStatus = $$$ERROR($$$CannotCreateObject,tObjectName)
+			Quit
+		}
+		Set tObject.%Source = pStream.Name
+		Set tGetTopFields = $parameter(tObject,"INCLUDETOPFIELDS")
+		If pStream.AtEnd {
+			Set tStatus = $$$ERROR($$$EnsRecordMapErrStreamAtEnd, pStream.Name)
+			Quit
+		}
+		Set pStream.CharEncoding = "UTF-8"
+
+		#; Parse incoming stream
+		Set tStatus = ..GetRecord(pStream, tObject, tGetTopFields, pTimeout, .pLookAhead, pLabelFound)
+		If $$$ISERR(tStatus) Quit
+	}
+	Catch ex {
+		Set tStatus = ex.AsStatus()
+	}
+	If $$$ISERR(tStatus) { Set pObject = $$$NULLOREF }
+	Else { Set pObject = tObject }
+	Quit tStatus
+]]></Implementation>
+</Method>
+
+<Method name="PutObject">
+<Description>
+Method to write a record to a stream or device. This method will be generated based on the
+structure of the RecordMap. For testing purposes, a file name may be passed in the pStream argument.</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec><![CDATA[pStream:%IO.DeviceStream,pObject:%RegisteredObject,pFlush:%Boolean=1,&pPadArray:%String]]></FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	Try {
+		Set tStatus = $$$OK
+		If '$IsObject(pStream) {
+			Set tFilename = pStream
+			Set pStream = ##class(%IO.FileStream).%New()
+			Do pStream.Open(tFilename,"WAE",,"UTF-8", .tStatus)
+			If $$$ISERR(tStatus) Quit
+		}
+		Set tHasTopFields = $parameter(pObject,"INCLUDETOPFIELDS")
+		Set pStream.CharEncoding = "UTF-8"
+
+		Set tStatus = ..PutRecord(pStream, pObject, tHasTopFields, .pPadArray)
+		If $$$ISERR(tStatus) Quit
+		If pFlush Do pStream.Flush(.tStatus)
+		If $$$ISERR(tStatus) Quit
+	}
+	Catch ex {
+		Set tStatus = ex.AsStatus()
+	}
+	Quit tStatus
+]]></Implementation>
+</Method>
+
+<Parameter name="OBJECTNAME">
+<Default>Demo.RecordMapBatch.Map.TrainDataOut.Record</Default>
+</Parameter>
+
+<Method name="GetRecord">
+<Description>
+Internal helper method to perform parse of incoming data</Description>
+<Internal>1</Internal>
+<ClassMethod>1</ClassMethod>
+<FormalSpec><![CDATA[pStream:%IO.DeviceStream,pObject:%RegisteredObject,pGetTopFields:%Boolean,pTimeout:%Numeric,&pLookAhead:%String="",pLabelFound:%Boolean=0]]></FormalSpec>
+<Private>1</Private>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	Set tStatus = $$$OK
+	If pLabelFound { Set tRecLabel = "" } 
+	Else { Set tRecLabel = "" } 
+	Set tStatus = ..chunkRecord(pStream, .tRecordData, .tCharCount, "", pTimeout, $char(13,10), tRecLabel, .pLookAhead, "")
+	If $$$ISERR(tStatus) Quit tStatus
+	Set tMaxLocal = $$$MaxLocalLength
+	Set tRecordData("charcount") = +$get(tCharCount)
+	Set tCurrChunk = 1
+	Set tTopPiece = 1
+	Set tCurrSep = 1
+	Set tStrings = 1
+	Set tSeps = $listbuild($char(44))
+	If '$data(tRecordData(tCurrChunk, "block")) {
+		Set tCurrString = $piece(tRecordData(tCurrChunk), $char(44), tTopPiece)
+	}
+	Else {
+		Set tCurrString = tRecordData(tCurrChunk)
+		Set tCurrPiece = 1
+	}
+	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(44), .tTopPiece)
+	If pGetTopFields {
+		Set pObject.Date =  pObject.DateDisplayToLogical(tCurrString)
+	}
+	If '$data(tRecordData(tCurrChunk, "block")) {
+		Set tCurrString = $piece(tRecordData(tCurrChunk), $char(44), tTopPiece)
+	}
+	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(44), .tTopPiece)
+	If pGetTopFields {
+		Set pObject.TrainID =  pObject.TrainIDDisplayToLogical(tCurrString)
+	}
+	If '$data(tRecordData(tCurrChunk, "block")) {
+		Set tCurrString = $piece(tRecordData(tCurrChunk), $char(44), tTopPiece)
+	}
+	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(44), .tTopPiece)
+	If pGetTopFields {
+		Set pObject.Direction = tCurrString
+	}
+	If '$data(tRecordData(tCurrChunk, "block")) {
+		Set tCurrString = $piece(tRecordData(tCurrChunk), $char(44), tTopPiece)
+	}
+	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(44), .tTopPiece)
+	If pGetTopFields {
+		Set pObject.Station = tCurrString
+	}
+	If '$data(tRecordData(tCurrChunk, "block")) {
+		Set tCurrString = $piece(tRecordData(tCurrChunk), $char(44), tTopPiece)
+	}
+	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(44), .tTopPiece)
+	If pGetTopFields {
+		Set pObject.Time =  pObject.TimeDisplayToLogical(tCurrString)
+	}
+	Quit tStatus
+]]></Implementation>
+</Method>
+
+<Method name="PutRecord">
+<Description>
+Internal helper method to output object to a stream</Description>
+<Internal>1</Internal>
+<ClassMethod>1</ClassMethod>
+<FormalSpec><![CDATA[pStream:%IO.DeviceStream,pObject:%RegisteredObject,pHasTopFields:%Boolean,&pPadArray:%String]]></FormalSpec>
+<Private>1</Private>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	Set tStatus = $$$OK
+	Do pStream.Write($select(pHasTopFields: pObject.DateLogicalToDisplay(pObject.Date),1: ""),0)
+	Do pStream.Write($char(44) _ $select(pHasTopFields: pObject.TrainIDLogicalToDisplay(pObject.TrainID),1: ""),0)
+	Do pStream.Write($char(44) _ $select(pHasTopFields: pObject.Direction,1: ""),0)
+	Do pStream.Write($char(44) _ $select(pHasTopFields: pObject.Station,1: ""),0)
+	Do pStream.Write($char(44) _ $select(pHasTopFields: pObject.TimeLogicalToDisplay(pObject.Time),1: ""),0)
+	Do pStream.Write($char(13,10), 0, .tStatus)
+	If $$$ISERR(tStatus) Quit tStatus
+	Quit tStatus
+]]></Implementation>
+</Method>
+
+<Method name="GetGeneratedClasses">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>*pClasses:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	Kill pClasses
+	Set pClasses("Demo.RecordMapBatch.Map.TrainDataOut.BatchOut")=""
+	Set pClasses("Demo.RecordMapBatch.Map.TrainDataOut.Record")=""
+	Set pClasses($classname())=""
+	Quit $$$OK
+]]></Implementation>
+</Method>
+
+<Method name="getIdentifier">
+<ClassMethod>1</ClassMethod>
+<CodeMode>expression</CodeMode>
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[""
+]]></Implementation>
+</Method>
+
+<Method name="getType">
+<ClassMethod>1</ClassMethod>
+<CodeMode>expression</CodeMode>
+<ReturnType>EnsLib.RecordMap.Model.DataType.RecordType</ReturnType>
+<Implementation><![CDATA["delimited"
+]]></Implementation>
+</Method>
+
+<XData name="RecordMap">
+<XMLNamespace>http://www.intersystems.com/Ensemble/RecordMap</XMLNamespace>
+<Data><![CDATA[
+<Record xmlns="http://www.intersystems.com/Ensemble/RecordMap" name="Demo.RecordMapBatch.Map.TrainDataOut" type="delimited" char_encoding="UTF-8" targetClassname="Demo.RecordMapBatch.Map.TrainDataOut.Record" batchClass="Demo.RecordMapBatch.Map.TrainDataOut.BatchOut" complexBatchManaged="0" padFromLeft="0" recordTerminator="\x0d\x0a" allowEarlyTerminator="0">
+  <Separators>
+    <Separator>,</Separator>
+  </Separators>
+  <annotation>Record Map describing the data which will be output by Demo.RecordMapBatch.Production.</annotation>
+  <Field name="Date" required="0" datatype="%Date" repeating="0">
+  </Field>
+  <Field name="TrainID" required="0" datatype="%Integer" repeating="0">
+  </Field>
+  <Field name="Direction" required="0" datatype="%String" repeating="0">
+  </Field>
+  <Field name="Station" required="0" datatype="%String" repeating="0">
+  </Field>
+  <Field name="Time" required="0" datatype="%Time" params="XMLTIMEZONE = IGNORE" repeating="0">
+  </Field>
+</Record>
+]]></Data>
+</XData>
+</Class>
+
+
+<Class name="Demo.RecordMapBatch.Production">
+<Super>Ens.Production</Super>
+<TimeChanged>64910,32412</TimeChanged>
+<TimeCreated>63895,50814.189304</TimeCreated>
+
+<XData name="ProductionDefinition">
+<Data><![CDATA[
+<Production Name="Demo.RecordMapBatch.Production" LogGeneralTraceEvents="false">
+  <Description>Sample Production to illustrate an input/output transformation using Record Map batches.  The input batch contains data about arrival times and expected arrival times for trains.  The output batch filters to include only actual arrival times and reformats the data. This data is provided by MassDOT at http://developer.mbta.com/Data/Red.txt.  NOTE: The source file, TrainDataIn_Sample.txt and a sample output file, TrainDataOut_Sample.txt, are located in [install_dir]/dev/RecordMapBatch/.</Description>
+  <ActorPoolSize>2</ActorPoolSize>
+  <Item Name="BatchFileService" Category="" ClassName="EnsLib.RecordMap.Service.BatchFileService" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="BatchClass">Demo.RecordMapBatch.Map.TrainDataIn.BatchIn</Setting>
+    <Setting Target="Host" Name="BatchHandling">Whole</Setting>
+    <Setting Target="Host" Name="RecordMap">Demo.RecordMapBatch.Map.TrainDataIn</Setting>
+    <Setting Target="Adapter" Name="FileAccessTimeout">10</Setting>
+    <Setting Target="Adapter" Name="FilePath">C:\Practice\in</Setting>
+    <Setting Target="Adapter" Name="FileSpec">TrainDataIn_*</Setting>
+    <Setting Target="Host" Name="TargetConfigNames">Router</Setting>
+  </Item>
+  <Item Name="BatchFileOperation" Category="" ClassName="EnsLib.RecordMap.Operation.BatchFileOperation" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="Filename">TrainDataOut_%Q.txt</Setting>
+    <Setting Target="Host" Name="RecordMap">Demo.RecordMapBatch.Map.TrainDataOut</Setting>
+    <Setting Target="Adapter" Name="FilePath">C:\Practice\out</Setting>
+  </Item>
+  <Item Name="Router" Category="" ClassName="EnsLib.MsgRouter.RoutingEngine" PoolSize="1" Enabled="true" Foreground="false" Comment="test" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="Validation"></Setting>
+    <Setting Target="Host" Name="BusinessRuleName">Demo.RecordMapBatch.Rule.BatchRoutingRule</Setting>
+  </Item>
+</Production>
+]]></Data>
+</XData>
+</Class>
+
+
+<Class name="Demo.RecordMapBatch.Rule.BatchRoutingRule">
+<Description>
+</Description>
+<Super>Ens.Rule.Definition</Super>
+<TimeChanged>64910,32412</TimeChanged>
+<TimeCreated>63904,50165.623267</TimeCreated>
+
+<Parameter name="RuleAssistClass">
+<Default>EnsLib.MsgRouter.RuleAssist</Default>
+</Parameter>
+
+<XData name="RuleDefinition">
+<XMLNamespace>http://www.intersystems.com/rule</XMLNamespace>
+<Data><![CDATA[
+<ruleDefinition alias="" context="EnsLib.MsgRouter.RoutingEngine" production="Demo.RecordMapBatch.Production">
+<ruleSet name="" effectiveBegin="" effectiveEnd="">
+<rule name="" disabled="false">
+<constraint name="source" value="BatchFileService"></constraint>
+<constraint name="msgClass" value="Demo.RecordMapBatch.Map.TrainDataIn.BatchIn"></constraint>
+<when condition="1">
+<send transform="Demo.RecordMapBatch.Transform" target="BatchFileOperation"></send>
+<return></return>
+</when>
+</rule>
+</ruleSet>
+</ruleDefinition>
+]]></Data>
+</XData>
+</Class>
+
+
+<Class name="Demo.RecordMapBatch.Transform">
+<Super>Ens.DataTransformDTL</Super>
+<TimeChanged>64910,32412</TimeChanged>
+<TimeCreated>63904,50063.71048</TimeCreated>
+<DependsOn>Demo.RecordMapBatch.Map.TrainDataIn.BatchIn,Demo.RecordMapBatch.Map.TrainDataOut.BatchOut</DependsOn>
+
+<Parameter name="IGNOREMISSINGSOURCE">
+<Default>1</Default>
+</Parameter>
+
+<Parameter name="REPORTERRORS">
+<Default>1</Default>
+</Parameter>
+
+<Parameter name="TREATEMPTYREPEATINGFIELDASNULL">
+<Default>0</Default>
+</Parameter>
+
+<XData name="DTL">
+<XMLNamespace>http://www.intersystems.com/dtl</XMLNamespace>
+<Data><![CDATA[
+<transform sourceClass='Demo.RecordMapBatch.Map.TrainDataIn.BatchIn' targetClass='Demo.RecordMapBatch.Map.TrainDataOut.BatchOut' create='new' language='objectscript' >
+<assign value='950000' property='$ZSTORAGE' action='set' >
+<annotation>Do this to avoid running into &lt;STORE&gt; errors when processing large batches.</annotation>
+</assign>
+<assign value='source.%Source' property='target.%Source' action='set' />
+<assign value='0' property='count' action='set' />
+<foreach property='source.Records()' key='k1' >
+<annotation>Loop through the records in the batch</annotation>
+<if condition='source.Records.(k1).InformationType = "Arrived"' >
+<true>
+<assign value='count + 1' property='count' action='set' />
+<assign value='source.Records.(k1).Trip' property='target.Records.(count).TrainID' action='set' />
+<assign value='..If($E(source.Records.(k1).PlatformKey,*) ="N","North","South")' property='target.Records.(count).Direction' action='set' />
+<assign value='..ConvertDateTime(source.Records.(k1).Time,"%#m/%#d/%Y %#I:%M:%S %#P","%q(4)")' property='tTime' action='set' />
+<assign value='..Piece(tTime,",",1)' property='target.Records.(count).Date' action='set' />
+<assign value='..Piece(tTime,",",2)' property='target.Records.(count).Time' action='set' />
+<code>
+<![CDATA[ Set tStation = $Case($E(source.Records.GetAt(k1).PlatformKey,2,*-1),"ALE":"Alewife","AND":"Andrew","ASH":"Ashmont","BRA":"Braintree","BRO":"Broadway","CEN":"Central Square","MGH":"Charles/MGH","DAV":"Davis","DTC":"Downtown Crossing","FIE":"Fields Corner","HAR":"Harvard Square","JFK":"JFK/UMass","KEN":"Kendall","NQU":"North Quincy","PRK":"Park Street","POR":"Porter Square","QUA":"Quincy Adams","QUC":"Quincy Center","SAV":"Savin Hill","SHA":"Shawmut","SOU":"South Station","WOL":"Wollaston",:$E(source.Records.GetAt(k1).PlatformKey,2,*-1))]]]]><![CDATA[></code>
+<assign value='tStation' property='target.Records.(count).Station' action='set' />
+<code>
+<annotation>Remove the current records from memory to reduce the memory used by this process.</annotation>
+<![CDATA[ Do source.Records.%UnSwizzleAt(k1)
+ Do target.Records.GetAt(count).%Save(0)
+ Do target.Records.%UnSwizzleAt(count)]]]]><![CDATA[></code>
+</true>
+</if>
+</foreach>
+</transform>
+]]></Data>
+</XData>
+</Class>
+</Export>
