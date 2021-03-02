@@ -171,7 +171,7 @@ ClassMethod getType() As EnsLib.RecordMap.Model.DataType.RecordType [ CodeMode =
 
 XData RecordMap [ XMLNamespace = "http://www.intersystems.com/Ensemble/RecordMap" ]
 {
-<Record xmlns="http://www.intersystems.com/Ensemble/RecordMap" name="Demo.RecordMapBatch.Map.TrainDataIn" type="delimited" char_encoding="UTF-8" targetClassname="Demo.RecordMapBatch.Map.TrainDataIn.Record" batchClass="Demo.RecordMapBatch.Map.TrainDataIn.BatchIn" complexBatchManaged="0" padFromLeft="0" recordTerminator="\x0d\x0a" allowEarlyTerminator="0">
+<Record xmlns="http://www.intersystems.com/Ensemble/RecordMap" name="Demo.RecordMapBatch.Map.TrainDataIn" type="delimited" char_encoding="UTF-8" targetClassname="Demo.RecordMapBatch.Map.TrainDataIn.Record" batchClass="Demo.RecordMapBatch.Map.TrainDataIn.BatchIn" complexBatchManaged="0" padFromLeft="0" recordTerminator="\x0a" allowEarlyTerminator="0">
   <Separators>
     <Separator>, </Separator>
   </Separators>

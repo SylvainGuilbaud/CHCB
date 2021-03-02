@@ -11,18 +11,32 @@ XData ProductionDefinition
     <Setting Target="Host" Name="BatchHandling">Whole</Setting>
     <Setting Target="Host" Name="RecordMap">Demo.RecordMapBatch.Map.TrainDataIn</Setting>
     <Setting Target="Adapter" Name="FileAccessTimeout">10</Setting>
-    <Setting Target="Adapter" Name="FilePath">C:\Practice\in</Setting>
+    <Setting Target="Adapter" Name="FilePath">/Users/guilbaud/data/BatchRecordMap/in</Setting>
     <Setting Target="Adapter" Name="FileSpec">TrainDataIn_*</Setting>
     <Setting Target="Host" Name="TargetConfigNames">Router</Setting>
   </Item>
   <Item Name="BatchFileOperation" Category="" ClassName="EnsLib.RecordMap.Operation.BatchFileOperation" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
     <Setting Target="Host" Name="Filename">TrainDataOut_%Q.txt</Setting>
     <Setting Target="Host" Name="RecordMap">Demo.RecordMapBatch.Map.TrainDataOut</Setting>
-    <Setting Target="Adapter" Name="FilePath">C:\Practice\out</Setting>
+    <Setting Target="Adapter" Name="FilePath">/Users/guilbaud/data/BatchRecordMap/out</Setting>
   </Item>
   <Item Name="Router" Category="" ClassName="EnsLib.MsgRouter.RoutingEngine" PoolSize="1" Enabled="true" Foreground="false" Comment="test" LogTraceEvents="false" Schedule="">
     <Setting Target="Host" Name="Validation"></Setting>
     <Setting Target="Host" Name="BusinessRuleName">Demo.RecordMapBatch.Rule.BatchRoutingRule</Setting>
+  </Item>
+  <Item Name="person in" Category="" ClassName="EnsLib.RecordMap.Service.BatchFileService" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="BatchClass">sg.record.person.Batch</Setting>
+    <Setting Target="Host" Name="BatchHandling">Whole</Setting>
+    <Setting Target="Host" Name="RecordMap">sg.record.person</Setting>
+    <Setting Target="Adapter" Name="FileAccessTimeout">10</Setting>
+    <Setting Target="Adapter" Name="FilePath">/Users/guilbaud/data/BatchRecordMap/in</Setting>
+    <Setting Target="Adapter" Name="FileSpec">person.txt</Setting>
+    <Setting Target="Host" Name="TargetConfigNames">Router</Setting>
+  </Item>
+  <Item Name="person out" Category="" ClassName="EnsLib.RecordMap.Operation.BatchFileOperation" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="Filename">PERSON.txt</Setting>
+    <Setting Target="Host" Name="RecordMap">sg.record.person</Setting>
+    <Setting Target="Adapter" Name="FilePath">/Users/guilbaud/data/BatchRecordMap/out</Setting>
   </Item>
 </Production>
 }

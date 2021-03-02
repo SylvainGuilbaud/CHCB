@@ -1,0 +1,4 @@
+name;dob;city
+Jimi Hendrix;27/11/1942;Seattle
+Georges Brassens;22/10/1921;Sète
+Barbara;09/06/1930;Paris

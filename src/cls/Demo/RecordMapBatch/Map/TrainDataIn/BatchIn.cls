@@ -10,7 +10,7 @@ Parameter RECORDMAPGENERATED = 1;
 
 Parameter BatchHeader = "Line, Trip, PlatformKey, InformationType, Time, TimeRemaining, Revenue, Route";
 
-Parameter HeaderTerm = "\x0d\x0a";
+Parameter HeaderTerm = "\x0a";
 
 Parameter BatchTrailer;
 

@@ -1,9 +1,10 @@
-/// ANNOTATION: Record Map describing the data which will be output by Demo.RecordMapBatch.Production.
-/// RECORDMAP: Modified during compilation of RecordMap 'Demo.RecordMapBatch.Map.TrainDataOut'
-/// on 2015-12-18 at 17:32:15.000 [2015-12-18 22:32:15.000 UTC]
-/// by user UnknownUser
-Class Demo.RecordMapBatch.Map.TrainDataOut Extends EnsLib.RecordMap.RecordMap
+/// RECORDMAP: Modified during compilation of RecordMap 'sg.record.person'
+/// on 2021-03-02 at 17:40:52,586 [2021-03-02 16:40:52.586 UTC]
+/// by user _SYSTEM
+Class sg.record.person Extends EnsLib.RecordMap.RecordMap
 {
+
+Parameter OBJECTNAME = "sg.record.person.Record";
 
 /// Method to retrieve a record from a stream or device. This method will be generated based on the
 /// structure of the RecordMap. For testing purposes, a file name may be passed in the pStream argument.
@@ -26,7 +27,7 @@ ClassMethod GetObject(pStream As %IO.DeviceStream, Output pObject As %Registered
 		}
 		Set tObject.%Source = pStream.Name
 		Set tGetTopFields = $parameter(tObject,"INCLUDETOPFIELDS")
-		If pStream.AtEnd {
+		If pStream.AtEnd && (""=pLookAhead) {
 			Set tStatus = $$$ERROR($$$EnsRecordMapErrStreamAtEnd, pStream.Name)
 			Quit
 		}
@@ -70,15 +71,13 @@ ClassMethod PutObject(pStream As %IO.DeviceStream, pObject As %RegisteredObject,
 	Quit tStatus
 }
 
-Parameter OBJECTNAME = "Demo.RecordMapBatch.Map.TrainDataOut.Record";
-
 /// Internal helper method to perform parse of incoming data
 ClassMethod GetRecord(pStream As %IO.DeviceStream, pObject As %RegisteredObject, pGetTopFields As %Boolean, pTimeout As %Numeric, ByRef pLookAhead As %String = "", pLabelFound As %Boolean = 0) As %Status [ Internal, Private ]
 {
 	Set tStatus = $$$OK
 	If pLabelFound { Set tRecLabel = "" } 
 	Else { Set tRecLabel = "" } 
-	Set tStatus = ..chunkRecord(pStream, .tRecordData, .tCharCount, "", pTimeout, $char(13,10), tRecLabel, .pLookAhead, "")
+	Set tStatus = ..chunkRecord(pStream, .tRecordData, .tCharCount, "", pTimeout, $char(10), tRecLabel, .pLookAhead, "")
 	If $$$ISERR(tStatus) Quit tStatus
 	Set tMaxLocal = $$$MaxLocalLength
 	Set tRecordData("charcount") = +$get(tCharCount)
@@ -86,45 +85,32 @@ ClassMethod GetRecord(pStream As %IO.DeviceStream, pObject As %RegisteredObject,
 	Set tTopPiece = 1
 	Set tCurrSep = 1
 	Set tStrings = 1
-	Set tSeps = $listbuild($char(44))
+	Set tCurrString = ""
+	Set tSeps = $listbuild($char(59))
 	If '$data(tRecordData(tCurrChunk, "block")) {
-		Set tCurrString = $piece(tRecordData(tCurrChunk), $char(44), tTopPiece)
+		Set tCurrString = $piece(tRecordData(tCurrChunk), $char(59), tTopPiece)
 	}
 	Else {
 		Set tCurrString = tRecordData(tCurrChunk)
 		Set tCurrPiece = 1
 	}
-	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(44), .tTopPiece)
+	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(59), .tTopPiece)
 	If pGetTopFields {
-		Set pObject.Date =  pObject.DateDisplayToLogical(tCurrString)
+		Set pObject.name = tCurrString
 	}
 	If '$data(tRecordData(tCurrChunk, "block")) {
-		Set tCurrString = $piece(tRecordData(tCurrChunk), $char(44), tTopPiece)
+		Set tCurrString = $piece(tRecordData(tCurrChunk), $char(59), tTopPiece)
 	}
-	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(44), .tTopPiece)
+	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(59), .tTopPiece)
 	If pGetTopFields {
-		Set pObject.TrainID =  pObject.TrainIDDisplayToLogical(tCurrString)
+		Set pObject.dob = tCurrString
 	}
 	If '$data(tRecordData(tCurrChunk, "block")) {
-		Set tCurrString = $piece(tRecordData(tCurrChunk), $char(44), tTopPiece)
+		Set tCurrString = $piece(tRecordData(tCurrChunk), $char(59), tTopPiece)
 	}
-	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(44), .tTopPiece)
+	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(59), .tTopPiece)
 	If pGetTopFields {
-		Set pObject.Direction = tCurrString
-	}
-	If '$data(tRecordData(tCurrChunk, "block")) {
-		Set tCurrString = $piece(tRecordData(tCurrChunk), $char(44), tTopPiece)
-	}
-	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(44), .tTopPiece)
-	If pGetTopFields {
-		Set pObject.Station = tCurrString
-	}
-	If '$data(tRecordData(tCurrChunk, "block")) {
-		Set tCurrString = $piece(tRecordData(tCurrChunk), $char(44), tTopPiece)
-	}
-	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(44), .tTopPiece)
-	If pGetTopFields {
-		Set pObject.Time =  pObject.TimeDisplayToLogical(tCurrString)
+		Set pObject.city = tCurrString
 	}
 	Quit tStatus
 }
@@ -133,12 +119,10 @@ ClassMethod GetRecord(pStream As %IO.DeviceStream, pObject As %RegisteredObject,
 ClassMethod PutRecord(pStream As %IO.DeviceStream, pObject As %RegisteredObject, pHasTopFields As %Boolean, ByRef pPadArray As %String) As %Status [ Internal, Private ]
 {
 	Set tStatus = $$$OK
-	Do pStream.Write($select(pHasTopFields: pObject.DateLogicalToDisplay(pObject.Date),1: ""),0)
-	Do pStream.Write($char(44) _ $select(pHasTopFields: pObject.TrainIDLogicalToDisplay(pObject.TrainID),1: ""),0)
-	Do pStream.Write($char(44) _ $select(pHasTopFields: pObject.Direction,1: ""),0)
-	Do pStream.Write($char(44) _ $select(pHasTopFields: pObject.Station,1: ""),0)
-	Do pStream.Write($char(44) _ $select(pHasTopFields: pObject.TimeLogicalToDisplay(pObject.Time),1: ""),0)
-	Do pStream.Write($char(13,10), 0, .tStatus)
+	Do pStream.Write($select(pHasTopFields: pObject.name,1: ""),0)
+	Do pStream.Write($char(59) _ $select(pHasTopFields: pObject.dob,1: ""),0)
+	Do pStream.Write($char(59) _ $select(pHasTopFields: pObject.city,1: ""),0)
+	Do pStream.Write($char(10), 0, .tStatus)
 	If $$$ISERR(tStatus) Quit tStatus
 	Quit tStatus
 }
@@ -146,8 +130,8 @@ ClassMethod PutRecord(pStream As %IO.DeviceStream, pObject As %RegisteredObject,
 ClassMethod GetGeneratedClasses(Output pClasses As %String) As %Status
 {
 	Kill pClasses
-	Set pClasses("Demo.RecordMapBatch.Map.TrainDataOut.BatchOut")=""
-	Set pClasses("Demo.RecordMapBatch.Map.TrainDataOut.Record")=""
+	Set pClasses("sg.record.person.Batch")=""
+	Set pClasses("sg.record.person.Record")=""
 	Set pClasses($classname())=""
 	Quit $$$OK
 }
@@ -164,20 +148,15 @@ ClassMethod getType() As EnsLib.RecordMap.Model.DataType.RecordType [ CodeMode =
 
 XData RecordMap [ XMLNamespace = "http://www.intersystems.com/Ensemble/RecordMap" ]
 {
-<Record xmlns="http://www.intersystems.com/Ensemble/RecordMap" name="Demo.RecordMapBatch.Map.TrainDataOut" type="delimited" char_encoding="UTF-8" targetClassname="Demo.RecordMapBatch.Map.TrainDataOut.Record" batchClass="Demo.RecordMapBatch.Map.TrainDataOut.BatchOut" complexBatchManaged="0" padFromLeft="0" recordTerminator="\x0a" allowEarlyTerminator="0">
+<Record xmlns="http://www.intersystems.com/Ensemble/RecordMap" name="sg.record.person" type="delimited" char_encoding="UTF-8" targetClassname="sg.record.person.Record" batchClass="sg.record.person.Batch" complexBatchManaged="0" padFromLeft="0" recordTerminator="\x0a" allowEarlyTerminator="0">
   <Separators>
-    <Separator>,</Separator>
+    <Separator>;</Separator>
   </Separators>
-  <annotation>Record Map describing the data which will be output by Demo.RecordMapBatch.Production.</annotation>
-  <Field name="Date" required="0" datatype="%Date" repeating="0">
+  <Field name="name" required="0" ignored="0" datatype="%String" repeating="0">
   </Field>
-  <Field name="TrainID" required="0" datatype="%Integer" repeating="0">
+  <Field name="dob" required="0" ignored="0" datatype="%String" repeating="0">
   </Field>
-  <Field name="Direction" required="0" datatype="%String" repeating="0">
-  </Field>
-  <Field name="Station" required="0" datatype="%String" repeating="0">
-  </Field>
-  <Field name="Time" required="0" datatype="%Time" params="XMLTIMEZONE = IGNORE" repeating="0">
+  <Field name="city" required="0" ignored="0" datatype="%String" repeating="0">
   </Field>
 </Record>
 }
