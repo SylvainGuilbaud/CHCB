@@ -1,5 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Export generator="IRIS" version="26" zv="IRIS for UNIX (Apple Mac OS X for x86-64) 2020.1 (Build 217_1U)" ts="2021-03-02 19:30:47">
+<Export generator="IRIS" version="26" zv="IRIS for UNIX (Apple Mac OS X for x86-64) 2020.1 (Build 217_1U)" ts="2021-03-02 19:39:36">
+<Class name="Demo.RecordMapBatch.Production">
+<Super>Ens.Production</Super>
+<TimeChanged>65805,70081.227328</TimeChanged>
+<TimeCreated>63895,50814.189304</TimeCreated>
+
+<XData name="ProductionDefinition">
+<Data><![CDATA[
+<Production Name="Demo.RecordMapBatch.Production" LogGeneralTraceEvents="false">
+  <Description>Sample Production to illustrate an input/output transformation using Record Map batches.  The input batch contains data about arrival times and expected arrival times for trains.  The output batch filters to include only actual arrival times and reformats the data. This data is provided by MassDOT at http://developer.mbta.com/Data/Red.txt.  NOTE: The source file, TrainDataIn_Sample.txt and a sample output file, TrainDataOut_Sample.txt, are located in [install_dir]/dev/RecordMapBatch/.</Description>
+  <ActorPoolSize>2</ActorPoolSize>
+  <Item Name="BatchFileService" Category="" ClassName="EnsLib.RecordMap.Service.BatchFileService" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="BatchClass">Demo.RecordMapBatch.Map.TrainDataIn.BatchIn</Setting>
+    <Setting Target="Host" Name="BatchHandling">Whole</Setting>
+    <Setting Target="Host" Name="RecordMap">Demo.RecordMapBatch.Map.TrainDataIn</Setting>
+    <Setting Target="Adapter" Name="FileAccessTimeout">10</Setting>
+    <Setting Target="Adapter" Name="FilePath">/Users/guilbaud/data/BatchRecordMap/in</Setting>
+    <Setting Target="Adapter" Name="FileSpec">TrainDataIn_*</Setting>
+    <Setting Target="Host" Name="TargetConfigNames">Router</Setting>
+  </Item>
+  <Item Name="BatchFileOperation" Category="" ClassName="EnsLib.RecordMap.Operation.BatchFileOperation" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="Filename">TrainDataOut_%Q.txt</Setting>
+    <Setting Target="Host" Name="RecordMap">Demo.RecordMapBatch.Map.TrainDataOut</Setting>
+    <Setting Target="Adapter" Name="FilePath">/Users/guilbaud/data/BatchRecordMap/out</Setting>
+  </Item>
+  <Item Name="Router" Category="" ClassName="EnsLib.MsgRouter.RoutingEngine" PoolSize="1" Enabled="true" Foreground="false" Comment="test" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="Validation"></Setting>
+    <Setting Target="Host" Name="BusinessRuleName">Demo.RecordMapBatch.Rule.BatchRoutingRule</Setting>
+  </Item>
+  <Item Name="person in" Category="" ClassName="EnsLib.RecordMap.Service.BatchFileService" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="BatchClass">sg.record.person.Batch</Setting>
+    <Setting Target="Host" Name="BatchHandling">Whole</Setting>
+    <Setting Target="Host" Name="RecordMap">sg.record.person</Setting>
+    <Setting Target="Adapter" Name="FileAccessTimeout">10</Setting>
+    <Setting Target="Adapter" Name="FilePath">/Users/guilbaud/data/BatchRecordMap/in</Setting>
+    <Setting Target="Adapter" Name="FileSpec">person.txt</Setting>
+    <Setting Target="Host" Name="TargetConfigNames">Router</Setting>
+  </Item>
+  <Item Name="person out" Category="" ClassName="EnsLib.RecordMap.Operation.BatchFileOperation" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="Filename">PERSON.txt</Setting>
+    <Setting Target="Host" Name="RecordMap">sg.record.person</Setting>
+    <Setting Target="Adapter" Name="FilePath">/Users/guilbaud/data/BatchRecordMap/out</Setting>
+    <Setting Target="Adapter" Name="Overwrite">1</Setting>
+  </Item>
+</Production>
+]]></Data>
+</XData>
+</Class>
+
+
 <Class name="sg.record.person.Batch">
 <Description>
 RECORDMAP: Modified during compilation of RecordMap 'sg.record.person'
