@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="IRIS" version="26" zv="IRIS for UNIX (Apple Mac OS X for x86-64) 2020.1 (Build 217_1U)" ts="2021-03-02 19:30:47">
+<Class name="sg.record.person.Batch">
+<Description>
+RECORDMAP: Modified during compilation of RecordMap 'sg.record.person'
+on 2021-03-02 at 17:40:52,578 [2021-03-02 16:40:52.578 UTC]
+by user _SYSTEM</Description>
+<Super>%Library.Persistent,EnsLib.RecordMap.SimpleBatch</Super>
+<TimeChanged>65805,63652.579209</TimeChanged>
+<TimeCreated>65805,63239.562333</TimeCreated>
+
+<Parameter name="XMLNAME">
+<Default>Batch</Default>
+</Parameter>
+
+<Parameter name="RECORDMAPGENERATED">
+<Default>1</Default>
+</Parameter>
+
+<Parameter name="BatchHeader">
+<Default>name;dob;city</Default>
+</Parameter>
+
+<Parameter name="HeaderTerm">
+<Default>\x0a</Default>
+</Parameter>
+
+<Parameter name="BatchTrailer">
+</Parameter>
+
+<Parameter name="TrailerTerm">
+</Parameter>
+
+<Parameter name="IgnoreLeadingData">
+<Default>0</Default>
+</Parameter>
+
+<Property name="Records">
+<Type>sg.record.person.Record</Type>
+<Cardinality>many</Cardinality>
+<Inverse>%ParentBatch</Inverse>
+<Relationship>1</Relationship>
+</Property>
+
+<Trigger name="OnDelete">
+<Code>	Set %ok = ..deleteRecords({ID})
+</Code>
+<Event>DELETE</Event>
+</Trigger>
+
+<Parameter name="XMLTYPE">
+<Default>sg_record_person_Batch</Default>
+</Parameter>
+
+<Storage name="Default">
+<Type>%Storage.Persistent</Type>
+<DataLocation>^sg.record.person.BatchD</DataLocation>
+<DefaultData>BatchDefaultData</DefaultData>
+<IdLocation>^sg.record.person.BatchD</IdLocation>
+<IndexLocation>^sg.record.person.BatchI</IndexLocation>
+<StreamLocation>^sg.record.person.BatchS</StreamLocation>
+<Data name="BatchDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>%Source</Value>
+</Value>
+<Value name="3">
+<Value>BatchHeader</Value>
+</Value>
+<Value name="4">
+<Value>BatchTrailer</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+
+
+<Class name="sg.record.person.Record">
+<Description>
+RECORDMAP: Generated from RecordMap 'sg.record.person'
+on 2021-03-02 at 17:40:52,572 [2021-03-02 16:40:52.572 UTC]
+by user _SYSTEM</Description>
+<ProcedureBlock>1</ProcedureBlock>
+<Super>%Persistent,%XML.Adaptor,Ens.Request,EnsLib.RecordMap.Base</Super>
+<TimeChanged>65805,63652.576361</TimeChanged>
+<TimeCreated>65805,63652.57223</TimeCreated>
+<Inheritance>right</Inheritance>
+
+<Parameter name="INCLUDETOPFIELDS">
+<Default>1</Default>
+</Parameter>
+
+<Property name="name">
+<Type>%String</Type>
+</Property>
+
+<Property name="dob">
+<Type>%String</Type>
+</Property>
+
+<Property name="city">
+<Type>%String</Type>
+</Property>
+
+<Property name="%ParentBatch">
+<Type>sg.record.person.Batch</Type>
+<Cardinality>one</Cardinality>
+<Inverse>Records</Inverse>
+<Relationship>1</Relationship>
+</Property>
+
+<Index name="%ParentBatchIdx">
+<Properties>%ParentBatch</Properties>
+</Index>
+
+<Parameter name="RECORDMAPGENERATED">
+<Default>1</Default>
+</Parameter>
+
+<Storage name="Default">
+<Type>%Storage.Persistent</Type>
+<DataLocation>^sg.record.person.RecordD</DataLocation>
+<DefaultData>RecordDefaultData</DefaultData>
+<IdLocation>^sg.record.person.RecordD</IdLocation>
+<IndexLocation>^sg.record.person.RecordI</IndexLocation>
+<StreamLocation>^sg.record.person.RecordS</StreamLocation>
+<ExtentSize>2000000</ExtentSize>
+<Data name="RecordDefaultData">
+<Structure>listnode</Structure>
+<Subscript/>
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>name</Value>
+</Value>
+<Value name="3">
+<Value>%Source</Value>
+</Value>
+<Value name="4">
+<Value>city</Value>
+</Value>
+<Value name="5">
+<Value>%ParentBatch</Value>
+</Value>
+<Value name="6">
+<Value>dob</Value>
+</Value>
+</Data>
+</Storage>
+</Class>
+
+
+<Class name="sg.record.person">
+<Description>
+RECORDMAP: Modified during compilation of RecordMap 'sg.record.person'
+on 2021-03-02 at 17:40:52,586 [2021-03-02 16:40:52.586 UTC]
+by user _SYSTEM</Description>
+<Super>EnsLib.RecordMap.RecordMap</Super>
+<TimeChanged>65805,63652.587889</TimeChanged>
+<TimeCreated>65805,61454.793686</TimeCreated>
+
+<Method name="GetObject">
+<Description>
+Method to retrieve a record from a stream or device. This method will be generated based on the
+structure of the RecordMap. For testing purposes, a file name may be passed in the pStream argument.</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec><![CDATA[pStream:%IO.DeviceStream,*pObject:%RegisteredObject,pTimeout:%Numeric=-1,&pLookAhead:%String="",pLabelFound:%Boolean=0]]></FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	Try {
+		Set tStatus = $$$OK
+		Set pObject = $$$NULLOREF
+		If '$IsObject(pStream) {
+			Set tFilename = pStream
+			Set pStream = ##class(%IO.FileStream).%New()
+			Do pStream.Open(tFilename,,pTimeout,"UTF-8", .tStatus)
+			If $$$ISERR(tStatus) Quit
+		}
+		Set tObjectName = $parameter($this,"OBJECTNAME")
+		Set tObject = $classmethod(tObjectName,"%New")
+		If '$IsObject(tObject) {
+			Set tStatus = $$$ERROR($$$CannotCreateObject,tObjectName)
+			Quit
+		}
+		Set tObject.%Source = pStream.Name
+		Set tGetTopFields = $parameter(tObject,"INCLUDETOPFIELDS")
+		If pStream.AtEnd && (""=pLookAhead) {
+			Set tStatus = $$$ERROR($$$EnsRecordMapErrStreamAtEnd, pStream.Name)
+			Quit
+		}
+		Set pStream.CharEncoding = "UTF-8"
+
+		#; Parse incoming stream
+		Set tStatus = ..GetRecord(pStream, tObject, tGetTopFields, pTimeout, .pLookAhead, pLabelFound)
+		If $$$ISERR(tStatus) Quit
+	}
+	Catch ex {
+		Set tStatus = ex.AsStatus()
+	}
+	If $$$ISERR(tStatus) { Set pObject = $$$NULLOREF }
+	Else { Set pObject = tObject }
+	Quit tStatus
+]]></Implementation>
+</Method>
+
+<Method name="PutObject">
+<Description>
+Method to write a record to a stream or device. This method will be generated based on the
+structure of the RecordMap. For testing purposes, a file name may be passed in the pStream argument.</Description>
+<ClassMethod>1</ClassMethod>
+<FormalSpec><![CDATA[pStream:%IO.DeviceStream,pObject:%RegisteredObject,pFlush:%Boolean=1,&pPadArray:%String]]></FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	Try {
+		Set tStatus = $$$OK
+		If '$IsObject(pStream) {
+			Set tFilename = pStream
+			Set pStream = ##class(%IO.FileStream).%New()
+			Do pStream.Open(tFilename,"WAE",,"UTF-8", .tStatus)
+			If $$$ISERR(tStatus) Quit
+		}
+		Set tHasTopFields = $parameter(pObject,"INCLUDETOPFIELDS")
+		Set pStream.CharEncoding = "UTF-8"
+
+		Set tStatus = ..PutRecord(pStream, pObject, tHasTopFields, .pPadArray)
+		If $$$ISERR(tStatus) Quit
+		If pFlush Do pStream.Flush(.tStatus)
+		If $$$ISERR(tStatus) Quit
+	}
+	Catch ex {
+		Set tStatus = ex.AsStatus()
+	}
+	Quit tStatus
+]]></Implementation>
+</Method>
+
+<Parameter name="OBJECTNAME">
+<Default>sg.record.person.Record</Default>
+</Parameter>
+
+<Method name="GetRecord">
+<Description>
+Internal helper method to perform parse of incoming data</Description>
+<Internal>1</Internal>
+<ClassMethod>1</ClassMethod>
+<FormalSpec><![CDATA[pStream:%IO.DeviceStream,pObject:%RegisteredObject,pGetTopFields:%Boolean,pTimeout:%Numeric,&pLookAhead:%String="",pLabelFound:%Boolean=0]]></FormalSpec>
+<Private>1</Private>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	Set tStatus = $$$OK
+	If pLabelFound { Set tRecLabel = "" } 
+	Else { Set tRecLabel = "" } 
+	Set tStatus = ..chunkRecord(pStream, .tRecordData, .tCharCount, "", pTimeout, $char(10), tRecLabel, .pLookAhead, "")
+	If $$$ISERR(tStatus) Quit tStatus
+	Set tMaxLocal = $$$MaxLocalLength
+	Set tRecordData("charcount") = +$get(tCharCount)
+	Set tCurrChunk = 1
+	Set tTopPiece = 1
+	Set tCurrSep = 1
+	Set tStrings = 1
+	Set tCurrString = ""
+	Set tSeps = $listbuild($char(59))
+	If '$data(tRecordData(tCurrChunk, "block")) {
+		Set tCurrString = $piece(tRecordData(tCurrChunk), $char(59), tTopPiece)
+	}
+	Else {
+		Set tCurrString = tRecordData(tCurrChunk)
+		Set tCurrPiece = 1
+	}
+	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(59), .tTopPiece)
+	If pGetTopFields {
+		Set pObject.name = tCurrString
+	}
+	If '$data(tRecordData(tCurrChunk, "block")) {
+		Set tCurrString = $piece(tRecordData(tCurrChunk), $char(59), tTopPiece)
+	}
+	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(59), .tTopPiece)
+	If pGetTopFields {
+		Set pObject.dob = tCurrString
+	}
+	If '$data(tRecordData(tCurrChunk, "block")) {
+		Set tCurrString = $piece(tRecordData(tCurrChunk), $char(59), tTopPiece)
+	}
+	Do ..checkMerge(.tCurrChunk, .tRecordData, .tCurrString, $char(59), .tTopPiece)
+	If pGetTopFields {
+		Set pObject.city = tCurrString
+	}
+	Quit tStatus
+]]></Implementation>
+</Method>
+
+<Method name="PutRecord">
+<Description>
+Internal helper method to output object to a stream</Description>
+<Internal>1</Internal>
+<ClassMethod>1</ClassMethod>
+<FormalSpec><![CDATA[pStream:%IO.DeviceStream,pObject:%RegisteredObject,pHasTopFields:%Boolean,&pPadArray:%String]]></FormalSpec>
+<Private>1</Private>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	Set tStatus = $$$OK
+	Do pStream.Write($select(pHasTopFields: pObject.name,1: ""),0)
+	Do pStream.Write($char(59) _ $select(pHasTopFields: pObject.dob,1: ""),0)
+	Do pStream.Write($char(59) _ $select(pHasTopFields: pObject.city,1: ""),0)
+	Do pStream.Write($char(10), 0, .tStatus)
+	If $$$ISERR(tStatus) Quit tStatus
+	Quit tStatus
+]]></Implementation>
+</Method>
+
+<Method name="GetGeneratedClasses">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>*pClasses:%String</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+	Kill pClasses
+	Set pClasses("sg.record.person.Batch")=""
+	Set pClasses("sg.record.person.Record")=""
+	Set pClasses($classname())=""
+	Quit $$$OK
+]]></Implementation>
+</Method>
+
+<Method name="getIdentifier">
+<ClassMethod>1</ClassMethod>
+<CodeMode>expression</CodeMode>
+<FormalSpec/>
+<ReturnType>%String</ReturnType>
+<Implementation><![CDATA[""
+]]></Implementation>
+</Method>
+
+<Method name="getType">
+<ClassMethod>1</ClassMethod>
+<CodeMode>expression</CodeMode>
+<FormalSpec/>
+<ReturnType>EnsLib.RecordMap.Model.DataType.RecordType</ReturnType>
+<Implementation><![CDATA["delimited"
+]]></Implementation>
+</Method>
+
+<XData name="RecordMap">
+<XMLNamespace>http://www.intersystems.com/Ensemble/RecordMap</XMLNamespace>
+<Data><![CDATA[
+<Record xmlns="http://www.intersystems.com/Ensemble/RecordMap" name="sg.record.person" type="delimited" char_encoding="UTF-8" targetClassname="sg.record.person.Record" batchClass="sg.record.person.Batch" complexBatchManaged="0" padFromLeft="0" recordTerminator="\x0a" allowEarlyTerminator="0">
+  <Separators>
+    <Separator>;</Separator>
+  </Separators>
+  <Field name="name" required="0" ignored="0" datatype="%String" repeating="0">
+  </Field>
+  <Field name="dob" required="0" ignored="0" datatype="%String" repeating="0">
+  </Field>
+  <Field name="city" required="0" ignored="0" datatype="%String" repeating="0">
+  </Field>
+</Record>
+]]></Data>
+</XData>
+</Class>
+
+
+<Class name="sg.record.transfo.person">
+<Super>Ens.DataTransformDTL</Super>
+<TimeChanged>65805,69135.869014</TimeChanged>
+<TimeCreated>65805,68320.526489</TimeCreated>
+<DependsOn>sg.record.person.Batch</DependsOn>
+
+<Parameter name="IGNOREMISSINGSOURCE">
+<Default>1</Default>
+</Parameter>
+
+<Parameter name="REPORTERRORS">
+<Default>1</Default>
+</Parameter>
+
+<Parameter name="TREATEMPTYREPEATINGFIELDASNULL">
+<Default>0</Default>
+</Parameter>
+
+<XData name="DTL">
+<XMLNamespace>http://www.intersystems.com/dtl</XMLNamespace>
+<Data><![CDATA[
+<transform sourceClass='sg.record.person.Batch' targetClass='sg.record.person.Batch' create='new' language='objectscript' >
+<foreach property='source.Records()' key='k1' >
+<assign value='..ToUpper(source.Records.(k1).name)' property='target.Records.(k1).name' action='set' />
+<assign value='..ConvertDateTime(source.Records.(k1).dob,"%d/%m/%Y","%Y-%m-%d")' property='target.Records.(k1).dob' action='set' />
+<assign value='..ToUpper(source.Records.(k1).city)' property='target.Records.(k1).city' action='set' />
+</foreach>
+</transform>
+]]></Data>
+</XData>
+</Class>
+</Export>
