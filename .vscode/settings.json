@@ -1,6 +1,6 @@
 {
     "objectscript.conn": {
-        "ns": "DEMO",
+        "ns": "CHCB",
         "active": true,
         "server": "irishealth"
     },
